@@ -1,35 +1,24 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/my_button.dart';
 import 'package:food_delivery/components/my_textfield.dart';
-import 'package:food_delivery/pages/home_page.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
 
-  LoginPage({
-    super.key,
-    required this.onTap,
-  });
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text editing controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  //login function
-  void login() {
-    //FILL OUT AUTHENTICATION LOGIC HERE
-
-    //NAVIGATE TO HOME PAGE
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
-  }
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
             //message, app slogan
             Text(
-              "Welcome back!",
+              "Let's get started!",
               style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.inversePrimary,
@@ -71,8 +60,15 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
 
+            //confirm password textfield
+            MyTextfield(
+              controller: confirmPasswordController,
+              label: "Confirm Password",
+              obscureText: true,
+            ),
+
             //sign in button
-            MyButton(onTap: login, text: "Sign in"),
+            MyButton(onTap: () {}, text: "Sign Up"),
 
             //not a member? register now
             Padding(
@@ -80,11 +76,11 @@ class _LoginPageState extends State<LoginPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Not a member?  "),
+                  Text("Already a member?  "),
                   GestureDetector(
                     onTap: widget.onTap,
                     child: Text(
-                      "Register now",
+                      "Login now",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: const Color.fromARGB(255, 2, 42, 244)),

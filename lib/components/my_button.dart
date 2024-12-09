@@ -11,15 +11,21 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(text),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 9),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(text),
+            ),
+          ),
         ),
       ),
     );
