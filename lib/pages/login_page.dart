@@ -8,7 +8,7 @@ import 'package:food_delivery/pages/home_page.dart';
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
 
-  LoginPage({
+  const LoginPage({
     super.key,
     required this.onTap,
   });
