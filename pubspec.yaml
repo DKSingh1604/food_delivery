@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.2
   collection: ^1.18.0
+  flutter_credit_card: ^4.0.1
+  lottie: ^3.2.0
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,7 @@ flutter:
   - assets/images/drinks/
   - assets/images/sides/
   - assets/images/salads/
+  - assets/animations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -339,6 +339,7 @@ class Restaurant extends ChangeNotifier {
 
   //G E T T E R S
   List<Food> get menu => _menu;
+  List<CartItem> get cart => _cart;
 
   //O P E R A T I O N S
 
@@ -425,8 +426,26 @@ class Restaurant extends ChangeNotifier {
   //H E L P E R S
 
   //generate a receipt
+  String displayCartReceipt() {
+    final receipt = StringBuffer();
+    receipt.writeln("Here's your receipt:");
+    receipt.writeln();
+
+    //format the date to include up to seconds only
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm::ss').format(DateTime.now());
+    receipt.writeln("Date: $formattedDate");
+  }
 
   //format double value into money
+  String _formatPrice(double price) {
+    return "\$${price.toStringAsFixed(2)}";
+  }
 
   // format list of addons into a string summary
+  String _formatAddons(List<Addon> addons) {
+    return addons
+        .map((addon) => "${addon.name}(${_formatPrice(addon.price)})")
+        .join(", ");
+  }
 }

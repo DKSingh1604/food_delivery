@@ -76,32 +76,33 @@ class _HomePageState extends State<HomePage>
       backgroundColor: Theme.of(context).colorScheme.secondary,
       drawer: MyDrawer(),
       body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                MySliverAppBar(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Divider(
-                          indent: 25,
-                          endIndent: 25,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          MySliverAppBar(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Divider(
+                    indent: 25,
+                    endIndent: 25,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
 
-                        //my current location
-                        MyCurrentLocation(),
+                  //my current location
+                  MyCurrentLocation(),
 
-                        //description box
-                        MyDescriptionBox(),
-                      ],
-                    ),
-                    title: MyTabBar(tabController: _tabController)),
-              ],
-          body: Consumer<Restaurant>(
-            builder: (context, restaurant, child) => TabBarView(
-              controller: _tabController,
-              children: getFoodInThisCategory(restaurant.menu),
-            ),
-          )),
+                  //description box
+                  MyDescriptionBox(),
+                ],
+              ),
+              title: MyTabBar(tabController: _tabController)),
+        ],
+        body: Consumer<Restaurant>(
+          builder: (context, restaurant, child) => TabBarView(
+            controller: _tabController,
+            children: getFoodInThisCategory(restaurant.menu),
+          ),
+        ),
+      ),
     );
   }
 }
