@@ -86,9 +86,7 @@ class MyCartTile extends StatelessWidget {
                                       SizedBox(width: 8),
 
                                       //addon price
-                                      Text("(+\$" +
-                                          addon.price.toString() +
-                                          ")"),
+                                      Text("(+\$${addon.price})"),
                                     ],
                                   ),
                                   shape: StadiumBorder(

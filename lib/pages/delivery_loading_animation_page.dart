@@ -16,10 +16,10 @@ class _DeliveryLoadingAnimationPageState
   void initState() {
     super.initState();
     // Navigate to the next page after 3 seconds
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DeliveryProgressPage()),
+        MaterialPageRoute(builder: (context) => const DeliveryProgressPage()),
       );
     });
   }

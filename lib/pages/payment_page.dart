@@ -57,7 +57,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ),
               },
-              child: Text("Pay"),
+              child: const Text("Pay"),
             )
           ],
         ),
@@ -69,7 +69,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Checkout"),
+        title: const Text("Checkout"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -104,7 +104,7 @@ class _PaymentPageState extends State<PaymentPage> {
               formKey: formKey,
             ),
 
-            SizedBox(height: 140),
+            const SizedBox(height: 140),
 
             //pay button
             MyButton(
