@@ -74,7 +74,13 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
                   "Dominic Toretto",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text("Driver"),
+                Row(
+                  children: [
+                    Icon(Icons.person),
+                    SizedBox(width: 5),
+                    Text("Driver"),
+                  ],
+                ),
               ],
             ),
           ),
@@ -85,17 +91,17 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
             child: Icon(
               Icons.message,
               color: Theme.of(context).colorScheme.inversePrimary,
-              size: 37,
+              size: 27,
             ),
           ),
 
           //call button
           Padding(
-            padding: const EdgeInsets.all(14.0),
+            padding: const EdgeInsets.all(15.0),
             child: Icon(
               Icons.call,
               color: Theme.of(context).colorScheme.inversePrimary,
-              size: 37,
+              size: 27,
             ),
           ),
         ],

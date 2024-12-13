@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:food_delivery/pages/cart_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MySliverAppBar extends StatelessWidget {
   final Widget child;
@@ -33,7 +34,10 @@ class MySliverAppBar extends StatelessWidget {
         ),
       ],
       backgroundColor: Theme.of(context).colorScheme.surface,
-      title: Text("Sunset Diner"),
+      title: Text(
+        "ZWIGGY",
+        style: TextStyle(fontStyle: FontStyle.italic),
+      ),
       centerTitle: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(

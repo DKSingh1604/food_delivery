@@ -20,8 +20,10 @@ class MyReceipt extends StatelessWidget {
             SizedBox(height: 25),
             Container(
               decoration: BoxDecoration(
-                border:
-                    Border.all(color: Theme.of(context).colorScheme.secondary),
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: 3,
+                    style: BorderStyle.values[1]),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: EdgeInsets.all(25),

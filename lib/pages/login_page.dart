@@ -5,6 +5,7 @@ import 'package:food_delivery/components/my_button.dart';
 import 'package:food_delivery/components/my_textfield.dart';
 import 'package:food_delivery/pages/home_page.dart';
 import 'package:food_delivery/services/auth/auth_service.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -59,68 +60,82 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          fit: StackFit.expand,
           children: [
-            //logo
-            Icon(
-              Icons.lock_open_rounded,
-              size: 72,
-              color: Theme.of(context).colorScheme.inversePrimary,
+            Lottie.asset(
+              'assets/animations/background.json',
+              fit: BoxFit.cover,
+              repeat: true,
+              animate: true,
             ),
-
-            //message, app slogan
-            Text(
-              "Welcome back!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-            ),
-
-            SizedBox(height: 50),
-
-            //email textfield
-            MyTextfield(
-              controller: emailController,
-              label: "Email",
-              obscureText: false,
-            ),
-
-            //password textfield
-            MyTextfield(
-              controller: passwordController,
-              label: "Password",
-              obscureText: true,
-            ),
-
-            //sign in button
-            MyButton(onTap: login, text: "Sign in"),
-
-            //not a member? register now
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Not a member?  "),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: Text(
-                      "Register now",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 2, 42, 244)),
+                  //zwiggy logo
+                  Image.asset(
+                    'assets/logos/zwiggy.png',
+                    height: 100,
+                  ),
+                  SizedBox(height: 50),
+
+                  //message, app slogan
+                  Text(
+                    "LOGIN",
+                    style: TextStyle(
+                      fontSize: 26,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
+
+                  SizedBox(height: 15),
+
+                  //email textfield
+                  MyTextfield(
+                    controller: emailController,
+                    label: "Email",
+                    obscureText: false,
+                  ),
+
+                  //password textfield
+                  MyTextfield(
+                    controller: passwordController,
+                    label: "Password",
+                    obscureText: true,
+                  ),
+
+                  //sign in button
+                  MyButton(onTap: login, text: "Sign in"),
+
+                  //not a member? register now
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Not a member?  ",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        GestureDetector(
+                          onTap: widget.onTap,
+                          child: Text(
+                            "Register now",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 2, 42, 244)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
+            ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/food.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyTabBar extends StatelessWidget {
   final TabController tabController;
@@ -12,7 +13,11 @@ class MyTabBar extends StatelessWidget {
   List<Tab> _buildCategoryTabs() {
     return FoodCategory.values.map((category) {
       return Tab(
-        text: category.toString().split('.').last,
+        //reduce text size
+        child: Text(
+          category.toString().split('.').last,
+          style: TextStyle(fontSize: 4),
+        ),
       );
     }).toList();
   }
