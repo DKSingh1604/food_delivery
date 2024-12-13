@@ -461,11 +461,24 @@ class Restaurant extends ChangeNotifier {
     receipt.writeln("-----------");
 
     receipt.writeln("Total Items: ${getTotalItemCount()}");
-    receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
+    receipt.writeln("Total Price: ");
+    String borderedTotalPrice =
+        _addBorderToText(getTotalPrice().toString() + " USD");
+    receipt.writeln(borderedTotalPrice);
+
     receipt.writeln();
     receipt.writeln("Delivering to : $deliveryAddress");
 
     return receipt.toString();
+  }
+
+  // Helper function to add a border around the total price
+  String _addBorderToText(String text) {
+    int width = text.length + 3; // Adjust width for padding and border
+    String border = '+' + '-' * (width - 2) + '+';
+    String paddedText = '|  $text  |';
+
+    return '$border\n$paddedText\n$border';
   }
 
   //format double value into money

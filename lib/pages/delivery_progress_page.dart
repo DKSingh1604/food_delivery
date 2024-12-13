@@ -15,6 +15,32 @@ class DeliveryProgressPage extends StatefulWidget {
 }
 
 class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
+  //method to call driver
+  void callDriver() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("U Sure?"),
+          content: Image.asset('assets/images/extras/call_meme.png'),
+        );
+      },
+    );
+  }
+
+  //method for message button
+  void messageDriver() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          // title: Text("U Sure?"),
+          content: Image.asset('assets/images/extras/message_meme.png'),
+        );
+      },
+    );
+  }
+
   //fet access to db
   FirestoreService db = FirestoreService();
   @override
@@ -59,8 +85,8 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
             ),
             child: Lottie.asset(
               'assets/animations/delivery_person.json',
-              width: 90,
-              height: 90,
+              width: 80,
+              height: 80,
             ),
           ),
           // SizedBox(width: 20),
@@ -72,7 +98,7 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
               children: [
                 Text(
                   "Dominic Toretto",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 Row(
                   children: [
@@ -86,22 +112,28 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
           ),
 
           //message button
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Icon(
-              Icons.message,
-              color: Theme.of(context).colorScheme.inversePrimary,
-              size: 27,
+          GestureDetector(
+            onTap: () => messageDriver(),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Icon(
+                Icons.message,
+                color: Theme.of(context).colorScheme.inversePrimary,
+                size: 27,
+              ),
             ),
           ),
 
           //call button
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Icon(
-              Icons.call,
-              color: Theme.of(context).colorScheme.inversePrimary,
-              size: 27,
+          GestureDetector(
+            onTap: () => callDriver(),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Icon(
+                Icons.call,
+                color: Theme.of(context).colorScheme.inversePrimary,
+                size: 27,
+              ),
             ),
           ),
         ],
