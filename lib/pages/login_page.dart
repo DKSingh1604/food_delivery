@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/components/my_button.dart';
 import 'package:food_delivery/components/my_textfield.dart';
 import 'package:food_delivery/pages/home_page.dart';
+import 'package:food_delivery/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;
@@ -23,12 +24,36 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
 
   //login function
-  void login() {
-    //FILL OUT AUTHENTICATION LOGIC HERE
+  void login() async {
+    //get instance of auth service
+    final _authService = AuthService();
 
-    //NAVIGATE TO HOME PAGE
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+    //try sign in
+    try {
+      await _authService.signInWithEmailAndPassword(
+          emailController.text, passwordController.text);
+    }
+
+    //display errors if any
+    catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
+  //forgot password function
+  void forgotPw() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Text("User tapped forgot password."),
+      ),
+    );
   }
 
   @override

@@ -1,11 +1,30 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:food_delivery/models/restaurant.dart';
 import 'package:food_delivery/pages/my_receipt.dart';
+import 'package:food_delivery/services/database/firestore.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
-class DeliveryProgressPage extends StatelessWidget {
+class DeliveryProgressPage extends StatefulWidget {
   const DeliveryProgressPage({super.key});
+
+  @override
+  State<DeliveryProgressPage> createState() => _DeliveryProgressPageState();
+}
+
+class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
+  //fet access to db
+  FirestoreService db = FirestoreService();
+  @override
+  void initState() {
+    super.initState();
+
+    //if we get to this page, submit order to fireabase db
+    String receipt = context.read<Restaurant>().displayCartReceipt();
+    db.saveOrderToDatabase(receipt);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +91,7 @@ class DeliveryProgressPage extends StatelessWidget {
 
           //call button
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(14.0),
             child: Icon(
               Icons.call,
               color: Theme.of(context).colorScheme.inversePrimary,
