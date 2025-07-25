@@ -41,7 +41,6 @@ A modern, feature-rich food delivery application built with Flutter, offering a 
 - **Firebase Authentication**: Secure user registration and login
 - **Email/Password Authentication**: Traditional auth method
 - **Form Validation**: Real-time input validation with user feedback
-- **Enhanced Security**: Password strength indicators and secure storage
 
 ### 🍕 Food Ordering System
 - **Dynamic Menu**: Categorized food items (Burgers, Salads, Sides, Desserts, Drinks)
@@ -57,19 +56,14 @@ A modern, feature-rich food delivery application built with Flutter, offering a 
 
 ### 📍 Location Services
 - **Current Location Display**: Shows user's current delivery address
-- **Location Management**: Update and manage delivery addresses
 - **Delivery Information**: Clear delivery details and timing
 
 ### 🧾 Order Management
 - **Receipt Generation**: Detailed order receipts with itemized billing
 - **Order Tracking**: Visual order progress with animated states
-- **Delivery Status**: Real-time delivery updates and notifications
-- **Order History**: Complete order history and reordering capabilities
 
 ### 🎭 Enhanced User Experience
 - **Lottie Animations**: Smooth vector animations for loading and interactions
-- **Haptic Feedback**: Tactile feedback for user interactions (optional)
-- **Pull-to-Refresh**: Intuitive content refresh mechanism
 - **Empty State Handling**: Beautiful empty states with call-to-action buttons
 
 ## 🛠 Tech Stack
