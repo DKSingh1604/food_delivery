@@ -249,435 +249,291 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Animated background
-          Lottie.asset(
-            'assets/animations/background.json',
-            fit: BoxFit.cover,
-            repeat: true,
-            animate: true,
-          ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenHeight = constraints.maxHeight;
+          final screenWidth = constraints.maxWidth;
 
-          // Gradient overlay for better text visibility
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.3),
-                  Colors.black.withOpacity(0.1),
-                  Colors.black.withOpacity(0.4),
-                ],
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              // Animated background
+              Lottie.asset(
+                'assets/animations/background.json',
+                fit: BoxFit.cover,
+                repeat: true,
+                animate: true,
               ),
-            ),
-          ),
 
-          SafeArea(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: 60),
+              // Gradient overlay for better text visibility
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.1),
+                      Colors.black.withOpacity(0.4),
+                    ],
+                  ),
+                ),
+              ),
 
-                    // Logo container with enhanced styling
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 20,
-                          ),
-                        ],
-                      ),
-                      child: Image.asset(
-                        'assets/logos/zwiggy.png',
-                        height: 80,
-                      ),
-                    ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: screenHeight * 0.05),
 
-                    SizedBox(height: 40),
-
-                    // Welcome text with enhanced typography
-                    Text(
-                      "Join Zwiggy!",
-                      style: GoogleFonts.poppins(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.5),
-                            offset: Offset(2, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-
-                    Text(
-                      "Create your account to get started",
-                      style: GoogleFonts.poppins(
-                        fontSize: 19,
-                        color: Colors.white.withOpacity(0.9),
-                        fontWeight: FontWeight.w300,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.9),
-                            offset: Offset(1, 1),
-                            blurRadius: 2,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 40),
-
-                    // Enhanced form container
-                    Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: Offset(0, 10),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          // Enhanced name field
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: MyTextfield(
-                              controller: nameController,
-                              label: "Full Name",
-                              obscureText: false,
-                            ),
-                          ),
-
-                          SizedBox(height: 20),
-
-                          // Enhanced email field
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: MyTextfield(
-                              controller: emailController,
-                              label: "Email",
-                              obscureText: false,
-                            ),
-                          ),
-
-                          SizedBox(height: 20),
-
-                          // Enhanced password field
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: MyTextfield(
-                              controller: passwordController,
-                              label: "Password",
-                              obscureText: true,
-                            ),
-                          ),
-
-                          // Password strength indicator
-                          if (_passwordStrength.isNotEmpty)
-                            Container(
-                              margin: EdgeInsets.only(top: 8),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: _passwordStrengthColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color:
-                                      _passwordStrengthColor.withOpacity(0.3),
-                                  width: 1,
-                                ),
+                        // Logo container with enhanced styling
+                        Container(
+                          padding: EdgeInsets.all(screenWidth * 0.05),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 20,
                               ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    _passwordStrength == "Strong"
-                                        ? Icons.check_circle_outline
-                                        : _passwordStrength == "Medium"
-                                            ? Icons.warning_amber_outlined
-                                            : Icons.error_outline,
-                                    color: _passwordStrengthColor,
-                                    size: 16,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    "Password strength: $_passwordStrength",
-                                    style: GoogleFonts.poppins(
-                                      color: _passwordStrengthColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                          SizedBox(height: 20),
-
-                          // Enhanced confirm password field
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 5),
-                                ),
-                              ],
-                            ),
-                            child: MyTextfield(
-                              controller: confirmPasswordController,
-                              label: "Confirm Password",
-                              obscureText: true,
-                            ),
+                            ],
                           ),
+                          child: Image.asset(
+                            'assets/logos/zwiggy.png',
+                            height: screenHeight * 0.1,
+                          ),
+                        ),
 
-                          SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.04),
 
-                          // Password requirements info
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.blue[50]!.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.blue[200]!.withOpacity(0.6),
-                                width: 1,
+                        // Welcome message
+                        Text(
+                          "Create Account",
+                          style: GoogleFonts.poppins(
+                            fontSize: screenWidth * 0.08,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.5),
+                                offset: Offset(2, 2),
+                                blurRadius: 4,
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.01),
+
+                        Text(
+                          "Join us and start your food journey!",
+                          style: GoogleFonts.poppins(
+                            fontSize: screenWidth * 0.04,
+                            color: Colors.white.withOpacity(0.9),
+                            fontWeight: FontWeight.w300,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.9),
+                                offset: Offset(1, 1),
+                                blurRadius: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.04),
+
+                        // Registration form container
+                        Container(
+                          padding: EdgeInsets.all(screenWidth * 0.07),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(25),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              // Name field
+                              MyTextfield(
+                                controller: nameController,
+                                label: "Name",
+                                obscureText: false,
+                              ),
+                              SizedBox(height: screenHeight * 0.02),
+
+                              // Email field
+                              MyTextfield(
+                                controller: emailController,
+                                label: "Email",
+                                obscureText: false,
+                              ),
+                              SizedBox(height: screenHeight * 0.02),
+
+                              // Password field
+                              MyTextfield(
+                                controller: passwordController,
+                                label: "Password",
+                                obscureText: true,
+                              ),
+                              SizedBox(height: screenHeight * 0.01),
+
+                              // Password strength indicator
+                              if (_passwordStrength.isNotEmpty)
                                 Row(
                                   children: [
-                                    Icon(
-                                      Icons.info_outline,
-                                      color: Colors.blue[600],
-                                      size: 18,
+                                    Expanded(
+                                      child: LinearProgressIndicator(
+                                        value: passwordController.text.length /
+                                            8.0,
+                                        backgroundColor: Colors.grey[300],
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                _passwordStrengthColor),
+                                      ),
                                     ),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: 10),
                                     Text(
-                                      "Password Requirements:",
+                                      _passwordStrength,
                                       style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.blue[700],
-                                        fontSize: 12,
+                                        color: _passwordStrengthColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: screenWidth * 0.03,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5),
-                                Text(
-                                  "• At least 6 characters long\n• Include uppercase and lowercase letters\n• Add numbers for extra security",
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.blue[600],
-                                    fontSize: 11,
-                                    height: 1.3,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              SizedBox(height: screenHeight * 0.02),
 
-                          SizedBox(height: 25),
-
-                          // Terms and conditions checkbox
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[50]!.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.grey[300]!.withOpacity(0.6),
-                                width: 1,
+                              // Confirm password field
+                              MyTextfield(
+                                controller: confirmPasswordController,
+                                label: "Confirm Password",
+                                obscureText: true,
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Transform.scale(
-                                  scale: 1.2,
-                                  child: Checkbox(
+                              SizedBox(height: screenHeight * 0.02),
+
+                              // Terms and conditions
+                              Row(
+                                children: [
+                                  Checkbox(
                                     value: _acceptTerms,
                                     onChanged: (value) {
                                       setState(() {
-                                        _acceptTerms = value ?? false;
+                                        _acceptTerms = value!;
                                       });
                                     },
                                     activeColor: Theme.of(context).primaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
+                                    checkColor: Colors.white,
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  child: RichText(
-                                    text: TextSpan(
+                                  Expanded(
+                                    child: Text(
+                                      "I accept the terms and conditions",
                                       style: GoogleFonts.poppins(
-                                        fontSize: 13,
-                                        color: Colors.grey[700],
+                                        color: Colors.white,
+                                        fontSize: screenWidth * 0.035,
                                       ),
-                                      children: [
-                                        TextSpan(text: "I agree to the "),
-                                        TextSpan(
-                                          text: "Terms of Service",
-                                          style: GoogleFonts.poppins(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
-                                        TextSpan(text: " and "),
-                                        TextSpan(
-                                          text: "Privacy Policy",
-                                          style: GoogleFonts.poppins(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
-                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          SizedBox(height: 30),
-
-                          // Enhanced sign up button
-                          Container(
-                            width: double.infinity,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.8),
                                 ],
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.3),
-                                  blurRadius: 15,
-                                  offset: Offset(0, 8),
+                              SizedBox(height: screenHeight * 0.03),
+
+                              // Sign up button
+                              Container(
+                                width: double.infinity,
+                                height: screenHeight * 0.065,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Theme.of(context).primaryColor,
+                                      Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.8),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.3),
+                                      blurRadius: 15,
+                                      offset: Offset(0, 8),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: MyButton(
-                                onTap: register, text: "Create Account"),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 30),
-
-                    // Enhanced bottom text with better styling
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Already have an account? ",
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey[600],
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: widget.onTap,
-                            child: Text(
-                              "Sign in",
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 14,
+                                child:
+                                    MyButton(onTap: register, text: "Sign Up"),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
 
-                    SizedBox(height: 30),
-                  ],
+                        SizedBox(height: screenHeight * 0.03),
+
+                        // Login link
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.05,
+                              vertical: screenHeight * 0.015),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Already have an account? ",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.grey[600],
+                                  fontSize: screenWidth * 0.035,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: widget.onTap,
+                                child: Text(
+                                  "Login now",
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: screenWidth * 0.035,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: screenHeight * 0.03),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

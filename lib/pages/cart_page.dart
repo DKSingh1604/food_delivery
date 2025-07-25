@@ -13,6 +13,8 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Consumer<Restaurant>(
       builder: (context, restaurant, child) {
         //cart
@@ -25,7 +27,7 @@ class CartPage extends StatelessWidget {
             title: Text(
               "My Cart",
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: screenWidth * 0.06,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
               ),
@@ -97,7 +99,8 @@ class CartPage extends StatelessWidget {
                                     opacity: value.clamp(0.0, 1.0),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
+                                          horizontal: screenWidth * 0.04,
+                                          vertical: 8),
                                       child: MyCartTile(cartItem: cartItem),
                                     ),
                                   ),
@@ -119,6 +122,8 @@ class CartPage extends StatelessWidget {
 
   // Enhanced empty cart widget
   Widget _buildEmptyCart(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Center(
       child: TweenAnimationBuilder<double>(
         duration: Duration(milliseconds: 1000),
@@ -134,7 +139,7 @@ class CartPage extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.shopping_cart_outlined,
-                    size: 100,
+                    size: screenWidth * 0.25,
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(0.3),
                   ),
@@ -142,7 +147,7 @@ class CartPage extends StatelessWidget {
                   Text(
                     "Your Cart is Empty",
                     style: GoogleFonts.poppins(
-                      fontSize: 22,
+                      fontSize: screenWidth * 0.055,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -151,7 +156,7 @@ class CartPage extends StatelessWidget {
                   Text(
                     "Looks like you haven't added anything yet.",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: screenWidth * 0.04,
                       color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                     textAlign: TextAlign.center,
@@ -167,8 +172,11 @@ class CartPage extends StatelessWidget {
 
   // Enhanced checkout section as a bottom sheet
   Widget _buildCheckoutSection(BuildContext context, Restaurant restaurant) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      padding: EdgeInsets.fromLTRB(24, 20, 24, 32),
+      padding:
+          EdgeInsets.fromLTRB(screenWidth * 0.06, 20, screenWidth * 0.06, 32),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
@@ -189,7 +197,7 @@ class CartPage extends StatelessWidget {
               Text(
                 "Total Price",
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: screenWidth * 0.045,
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),
@@ -197,7 +205,7 @@ class CartPage extends StatelessWidget {
               Text(
                 "\$${restaurant.getTotalPrice().toStringAsFixed(2)}",
                 style: GoogleFonts.poppins(
-                  fontSize: 22,
+                  fontSize: screenWidth * 0.055,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
                 ),

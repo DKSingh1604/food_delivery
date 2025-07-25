@@ -45,6 +45,8 @@ class _HomePageState extends State<HomePage>
 
   //return list of foods in given category
   List<Widget> getFoodInThisCategory(List<Food> fullMenu) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return FoodCategory.values.map((category) {
       //get category menu
       List<Food> categoryMenu = _filterMenuByCategory(category, fullMenu);
@@ -69,8 +71,10 @@ class _HomePageState extends State<HomePage>
                 children: [
                   // Category header with enhanced styling
                   Container(
-                    margin: EdgeInsets.fromLTRB(20, 16, 20, 12),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    margin: EdgeInsets.fromLTRB(
+                        screenWidth * 0.05, 16, screenWidth * 0.05, 12),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.04, vertical: 12),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -114,7 +118,7 @@ class _HomePageState extends State<HomePage>
                         Text(
                           "${category.toString().split('.').last} (${categoryMenu.length} items)",
                           style: GoogleFonts.poppins(
-                            fontSize: 16,
+                            fontSize: screenWidth * 0.04,
                             fontWeight: FontWeight.w600,
                             color: Theme.of(context).colorScheme.primary,
                             letterSpacing: 0.5,
@@ -127,8 +131,8 @@ class _HomePageState extends State<HomePage>
                   // Enhanced ListView with staggered animations
                   Expanded(
                     child: ListView.builder(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.04, vertical: 0),
                       itemCount: categoryMenu.length,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -283,6 +287,8 @@ class _HomePageState extends State<HomePage>
 
   // Enhanced empty state widget with animations
   Widget _buildEmptyState(FoodCategory category) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 1200),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -294,7 +300,7 @@ class _HomePageState extends State<HomePage>
             opacity: value.clamp(0.0, 1.0),
             child: Center(
               child: Padding(
-                padding: EdgeInsets.all(40),
+                padding: EdgeInsets.all(screenWidth * 0.1),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -307,7 +313,7 @@ class _HomePageState extends State<HomePage>
                         return Transform.scale(
                           scale: pulseValue.clamp(0.1, 2.0),
                           child: Container(
-                            padding: EdgeInsets.all(32),
+                            padding: EdgeInsets.all(screenWidth * 0.08),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
@@ -344,7 +350,7 @@ class _HomePageState extends State<HomePage>
                             ),
                             child: Icon(
                               _getCategoryIcon(category),
-                              size: 64,
+                              size: screenWidth * 0.15,
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
@@ -355,8 +361,8 @@ class _HomePageState extends State<HomePage>
 
                     // Enhanced title with better typography
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.05, vertical: 12),
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
@@ -374,7 +380,7 @@ class _HomePageState extends State<HomePage>
                       child: Text(
                         "No ${category.toString().split('.').last} Available",
                         style: GoogleFonts.poppins(
-                          fontSize: 20,
+                          fontSize: screenWidth * 0.05,
                           fontWeight: FontWeight.w700,
                           color: Theme.of(context).colorScheme.primary,
                           letterSpacing: 0.5,
@@ -388,7 +394,7 @@ class _HomePageState extends State<HomePage>
                     Text(
                       "We're cooking up something delicious!\nCheck back soon for amazing options.",
                       style: GoogleFonts.poppins(
-                        fontSize: 15,
+                        fontSize: screenWidth * 0.038,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
                             .colorScheme
@@ -402,8 +408,8 @@ class _HomePageState extends State<HomePage>
 
                     // Add a subtle call-to-action button
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.06, vertical: 12),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -441,7 +447,7 @@ class _HomePageState extends State<HomePage>
                           Text(
                             "Pull to refresh",
                             style: GoogleFonts.poppins(
-                              fontSize: 13,
+                              fontSize: screenWidth * 0.032,
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context)
                                   .colorScheme

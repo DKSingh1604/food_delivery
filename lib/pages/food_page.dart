@@ -44,66 +44,111 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Stack(
       children: [
         //Scaffold UI
         Scaffold(
           body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //food image
-                Image.asset(widget.food.imagePath),
+                Hero(
+                  tag: 'food_image_${widget.food.name}',
+                  child: Container(
+                    height: screenHeight * 0.4,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(widget.food.imagePath),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 15,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(screenWidth * 0.05),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //food name
                       Text(
                         widget.food.name,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: screenWidth * 0.07,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+
+                      SizedBox(height: screenHeight * 0.01),
 
                       //food price
                       Text(
                         "\$" + widget.food.price.toString(),
                         style: TextStyle(
+                          fontSize: screenWidth * 0.05,
                           color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
+
+                      SizedBox(height: screenHeight * 0.02),
 
                       //food description
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.food.description),
-                      ),
-
-                      Divider(
-                        color: Theme.of(context).colorScheme.primary,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-
-                      SizedBox(height: 20),
-
                       Text(
-                        "Addons",
+                        widget.food.description,
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: screenWidth * 0.04,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          height: 1.5,
                         ),
                       ),
+
+                      SizedBox(height: screenHeight * 0.03),
+
+                      Divider(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.5),
+                        thickness: 1,
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
+
+                      Text(
+                        "Add-ons",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.055,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
 
                       //addons
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 1.5,
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: ListView.builder(
                           shrinkWrap: true,
@@ -115,27 +160,36 @@ class _FoodPageState extends State<FoodPage> {
                             return CheckboxListTile(
                               title: Text(
                                 addon.name,
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: screenWidth * 0.04),
                               ),
-                              subtitle: Text("\$" + addon.price.toString()),
+                              subtitle: Text(
+                                "\$" + addon.price.toString(),
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
                               value: widget.selectedAddons[addon],
                               onChanged: (bool? value) {
                                 setState(() {
                                   widget.selectedAddons[addon] = value!;
                                 });
                               },
+                              activeColor:
+                                  Theme.of(context).colorScheme.primary,
                             );
                           },
                         ),
                       ),
 
-                      SizedBox(height: 13),
+                      SizedBox(height: screenHeight * 0.03),
 
                       //button -> add to cart
                       MyButton(
                           onTap: () =>
                               addToCart(widget.food, widget.selectedAddons),
                           text: "Add to Cart"),
+
+                      SizedBox(height: screenHeight * 0.02),
                     ],
                   ),
                 )
@@ -146,17 +200,26 @@ class _FoodPageState extends State<FoodPage> {
 
         //Back Button
         SafeArea(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_ios_rounded,
-                size: 35,
-                color: Theme.of(context).colorScheme.primary,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 10,
+                  )
+                ],
+              ),
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: screenWidth * 0.06,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ),
