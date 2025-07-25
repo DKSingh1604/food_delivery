@@ -13,10 +13,19 @@ class MyTabBar extends StatelessWidget {
   List<Tab> _buildCategoryTabs() {
     return FoodCategory.values.map((category) {
       return Tab(
-        //reduce text size
-        child: Text(
-          category.toString().split('.').last,
-          style: TextStyle(fontSize: 4),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            category.toString().split('.').last,
+            style: GoogleFonts.poppins(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              // letterSpacing: 0.5,
+            ),
+          ),
         ),
       );
     }).toList();
@@ -24,9 +33,36 @@ class MyTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBar(
-      controller: tabController,
-      tabs: _buildCategoryTabs(),
+    return Container(
+      // padding: EdgeInsets.all(2),
+
+      child: TabBar(
+        controller: tabController,
+        tabs: _buildCategoryTabs(),
+        isScrollable: true,
+        tabAlignment: TabAlignment.start,
+        labelColor: Theme.of(context).colorScheme.primary,
+        unselectedLabelColor:
+            Theme.of(context).colorScheme.inversePrimary.withOpacity(0.7),
+        indicator: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.primary.withOpacity(0.15),
+              Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            width: 1.5,
+          ),
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        labelPadding: EdgeInsets.symmetric(horizontal: 5),
+        splashFactory: NoSplash.splashFactory,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        dividerColor: Colors.transparent,
+      ),
     );
   }
 }

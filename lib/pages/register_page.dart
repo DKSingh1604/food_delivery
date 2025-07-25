@@ -5,6 +5,7 @@ import 'package:food_delivery/components/my_button.dart';
 import 'package:food_delivery/components/my_textfield.dart';
 import 'package:food_delivery/services/auth/auth_service.dart';
 import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -17,15 +18,94 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   //text editing controllers
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
+  // Terms and conditions checkbox
+  bool _acceptTerms = false;
+
+  // Password strength
+  String _passwordStrength = "";
+  Color _passwordStrengthColor = Colors.grey;
+
+  @override
+  void initState() {
+    super.initState();
+    passwordController.addListener(_checkPasswordStrength);
+  }
+
+  @override
+  void dispose() {
+    passwordController.removeListener(_checkPasswordStrength);
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _checkPasswordStrength() {
+    setState(() {
+      String password = passwordController.text;
+      if (password.isEmpty) {
+        _passwordStrength = "";
+        _passwordStrengthColor = Colors.grey;
+      } else if (password.length < 6) {
+        _passwordStrength = "Too short";
+        _passwordStrengthColor = Colors.red;
+      } else if (password.length < 8) {
+        _passwordStrength = "Weak";
+        _passwordStrengthColor = Colors.orange;
+      } else if (password.contains(RegExp(r'[A-Z]')) &&
+          password.contains(RegExp(r'[a-z]')) &&
+          password.contains(RegExp(r'[0-9]'))) {
+        _passwordStrength = "Strong";
+        _passwordStrengthColor = Colors.green;
+      } else {
+        _passwordStrength = "Medium";
+        _passwordStrengthColor = Colors.yellow[700]!;
+      }
+    });
+  }
+
   //register method
   void register() async {
     //get the auth service
     final _authService = AuthService();
+
+    // Validate inputs
+    if (nameController.text.trim().isEmpty) {
+      _showErrorDialog("Validation Error", "Please enter your name.",
+          Icons.person_outline, Colors.orange);
+      return;
+    }
+
+    if (emailController.text.trim().isEmpty) {
+      _showErrorDialog("Validation Error", "Please enter your email address.",
+          Icons.email_outlined, Colors.orange);
+      return;
+    }
+
+    if (passwordController.text.length < 6) {
+      _showErrorDialog(
+          "Validation Error",
+          "Password must be at least 6 characters long.",
+          Icons.lock_outline,
+          Colors.orange);
+      return;
+    }
+
+    if (!_acceptTerms) {
+      _showErrorDialog(
+          "Terms Required",
+          "Please accept the terms and conditions to continue.",
+          Icons.description_outlined,
+          Colors.orange);
+      return;
+    }
 
     //check if passwords match -> create user
     if (passwordController.text == confirmPasswordController.text) {
@@ -33,116 +113,572 @@ class _RegisterPageState extends State<RegisterPage> {
       try {
         await _authService.signUpWithEmailAndPassword(
             emailController.text, passwordController.text);
+
+        // Show success message
+        _showSuccessDialog();
       }
       //display errors
       catch (e) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(e.toString()),
-          ),
-        );
+        _showErrorDialog("Registration Error", e.toString(),
+            Icons.error_outline, Colors.red);
       }
     }
 
     //if passwords don't match -> throw error
     else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Paswords don't match!"),
-        ),
-      );
+      _showErrorDialog(
+          "Password Mismatch",
+          "Passwords don't match! Please make sure both passwords are identical.",
+          Icons.warning_amber_outlined,
+          Colors.orange);
     }
+  }
+
+  void _showErrorDialog(
+      String title, String message, IconData icon, Color color) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              icon,
+              color: color,
+              size: 28,
+            ),
+            SizedBox(width: 10),
+            Flexible(
+              child: Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          message,
+          style: GoogleFonts.poppins(
+            color: Colors.grey[600],
+            fontSize: 14,
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: color,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              "OK",
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.check_circle_outline,
+              color: Colors.green,
+              size: 28,
+            ),
+            SizedBox(width: 10),
+            Text(
+              "Welcome!",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          "Your account has been created successfully! Welcome to Zwiggy.",
+          style: GoogleFonts.poppins(
+            color: Colors.grey[600],
+            fontSize: 14,
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              "Get Started",
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Lottie.asset(
-              'assets/animations/background.json',
-              fit: BoxFit.cover,
-              repeat: true,
-              animate: true,
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //zwiggy logo
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Animated background
+          Lottie.asset(
+            'assets/animations/background.json',
+            fit: BoxFit.cover,
+            repeat: true,
+            animate: true,
+          ),
 
-                  Image.asset(
-                    'assets/logos/zwiggy.png',
-                    height: 100,
-                  ),
-                  SizedBox(height: 50),
-
-                  //message, app slogan
-                  Text(
-                    "REGISTER",
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-
-                  SizedBox(height: 15),
-
-                  //email textfield
-                  MyTextfield(
-                    controller: emailController,
-                    label: "Email",
-                    obscureText: false,
-                  ),
-
-                  //password textfield
-                  MyTextfield(
-                    controller: passwordController,
-                    label: "Password",
-                    obscureText: true,
-                  ),
-
-                  //confirm password textfield
-                  MyTextfield(
-                    controller: confirmPasswordController,
-                    label: "Confirm Password",
-                    obscureText: true,
-                  ),
-
-                  //sign in button
-                  MyButton(onTap: register, text: "Sign Up"),
-
-                  //not a member? register now
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Already a member?  ",
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        GestureDetector(
-                          onTap: widget.onTap,
-                          child: Text(
-                            "Login now",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: const Color.fromARGB(255, 2, 42, 244)),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+          // Gradient overlay for better text visibility
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.1),
+                  Colors.black.withOpacity(0.4),
                 ],
               ),
             ),
-          ],
-        ));
+          ),
+
+          SafeArea(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 60),
+
+                    // Logo container with enhanced styling
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20,
+                          ),
+                        ],
+                      ),
+                      child: Image.asset(
+                        'assets/logos/zwiggy.png',
+                        height: 80,
+                      ),
+                    ),
+
+                    SizedBox(height: 40),
+
+                    // Welcome text with enhanced typography
+                    Text(
+                      "Join Zwiggy!",
+                      style: GoogleFonts.poppins(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.5),
+                            offset: Offset(2, 2),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+
+                    Text(
+                      "Create your account to get started",
+                      style: GoogleFonts.poppins(
+                        fontSize: 19,
+                        color: Colors.white.withOpacity(0.9),
+                        fontWeight: FontWeight.w300,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withOpacity(0.9),
+                            offset: Offset(1, 1),
+                            blurRadius: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 40),
+
+                    // Enhanced form container
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          // Enhanced name field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: MyTextfield(
+                              controller: nameController,
+                              label: "Full Name",
+                              obscureText: false,
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+
+                          // Enhanced email field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: MyTextfield(
+                              controller: emailController,
+                              label: "Email",
+                              obscureText: false,
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+
+                          // Enhanced password field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: MyTextfield(
+                              controller: passwordController,
+                              label: "Password",
+                              obscureText: true,
+                            ),
+                          ),
+
+                          // Password strength indicator
+                          if (_passwordStrength.isNotEmpty)
+                            Container(
+                              margin: EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _passwordStrengthColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color:
+                                      _passwordStrengthColor.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _passwordStrength == "Strong"
+                                        ? Icons.check_circle_outline
+                                        : _passwordStrength == "Medium"
+                                            ? Icons.warning_amber_outlined
+                                            : Icons.error_outline,
+                                    color: _passwordStrengthColor,
+                                    size: 16,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    "Password strength: $_passwordStrength",
+                                    style: GoogleFonts.poppins(
+                                      color: _passwordStrengthColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          SizedBox(height: 20),
+
+                          // Enhanced confirm password field
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: MyTextfield(
+                              controller: confirmPasswordController,
+                              label: "Confirm Password",
+                              obscureText: true,
+                            ),
+                          ),
+
+                          SizedBox(height: 20),
+
+                          // Password requirements info
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50]!.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.blue[200]!.withOpacity(0.6),
+                                width: 1,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.info_outline,
+                                      color: Colors.blue[600],
+                                      size: 18,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      "Password Requirements:",
+                                      style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue[700],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  "• At least 6 characters long\n• Include uppercase and lowercase letters\n• Add numbers for extra security",
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.blue[600],
+                                    fontSize: 11,
+                                    height: 1.3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(height: 25),
+
+                          // Terms and conditions checkbox
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[50]!.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.grey[300]!.withOpacity(0.6),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Transform.scale(
+                                  scale: 1.2,
+                                  child: Checkbox(
+                                    value: _acceptTerms,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _acceptTerms = value ?? false;
+                                      });
+                                    },
+                                    activeColor: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 13,
+                                        color: Colors.grey[700],
+                                      ),
+                                      children: [
+                                        TextSpan(text: "I agree to the "),
+                                        TextSpan(
+                                          text: "Terms of Service",
+                                          style: GoogleFonts.poppins(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w600,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                        TextSpan(text: " and "),
+                                        TextSpan(
+                                          text: "Privacy Policy",
+                                          style: GoogleFonts.poppins(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.w600,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(height: 30),
+
+                          // Enhanced sign up button
+                          Container(
+                            width: double.infinity,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.3),
+                                  blurRadius: 15,
+                                  offset: Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: MyButton(
+                                onTap: register, text: "Create Account"),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    // Enhanced bottom text with better styling
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Already have an account? ",
+                            style: GoogleFonts.poppins(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: widget.onTap,
+                            child: Text(
+                              "Sign in",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
