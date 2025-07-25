@@ -9,8 +9,8 @@ A modern, feature-rich food delivery application built with Flutter, offering a 
 ## 📱 Screenshots
 
 <img src="assets/ss/Login.png" alt="Login page" width="300"/>
-<img src="assets/ss/Login.png" alt="Login page" width="300"/>
-<img src="assets/ss/Login.png" alt="Login page" width="300"/>
+<img src="assets/ss/home_page.png" alt="Login page" width="300"/>
+<img src="assets/ss/list.png" alt="Login page" width="300"/>
 
 ## ✨ Features
 
