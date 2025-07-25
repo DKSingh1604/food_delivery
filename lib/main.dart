@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // default theme should be dark
+      darkTheme: ThemeData.dark(),
       home: AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
