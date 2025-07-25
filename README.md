@@ -15,6 +15,18 @@ A modern, feature-rich food delivery application built with Flutter, offering a 
 </p>
 <p align="center">
   <img src="assets/ss/list.png" alt="Food list" width="300"/>
+  &nbsp
+  <img src="assets/ss/cart.png" alt="Cart" width="300"/>
+</p>
+<p align="center">
+  <img src="assets/ss/checkout.png" alt="Checkout Page" width="300"/>
+  &nbsp
+  <img src="assets/ss/confirmation_payment.png" alt="Payment Confirmation" width="300"/>
+</p>
+<p align="center">
+  <img src="assets/ss/track_delivery.png" alt="Delivery" width="300"/>
+  &nbsp
+  <img src="assets/ss/track_delivery1.png" alt="Track" width="300"/>
 </p>
 
 ## ✨ Features
