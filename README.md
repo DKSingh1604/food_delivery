@@ -8,7 +8,7 @@ A modern, feature-rich food delivery application built with Flutter, offering a 
 
 ## 📱 Screenshots
 
-<!-- Add screenshots here when available -->
+<img src="assets/ss/Login.png" alt="Trucxo Logo" width="400"/>
 
 ## ✨ Features
 
